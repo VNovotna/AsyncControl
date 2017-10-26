@@ -15,14 +15,20 @@ final class AsyncControlLink
 	 * @var array
 	 */
 	private $attributes;
+	/**
+	* @var array
+	*/
+	private $params = [];
 
 
 	public function __construct(
 		string $message = NULL,
-		array $attributes = NULL
+		array $attributes = NULL,
+		array $params = []
 	) {
 		$this->message = $message === NULL ? self::$defaultMessage : $message;
 		$this->attributes = $attributes === NULL ? self::$defaultAttributes : $attributes;
+		$this->params = $params;
 	}
 
 
@@ -42,5 +48,10 @@ final class AsyncControlLink
 	public function getAttributes(): array
 	{
 		return $this->attributes;
+	}
+	
+	public function getParams(): array 
+	{
+		return $this->params;
 	}
 }

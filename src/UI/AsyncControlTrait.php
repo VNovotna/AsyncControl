@@ -27,7 +27,7 @@ trait AsyncControlTrait
 		ob_start(function () {
 		});
 		try {
-			$this->renderAsync();
+			$this->renderAsync(null, null, $this->getParameters());
 		} catch (\Throwable $e) {
 			ob_end_clean();
 			throw $e;
@@ -41,7 +41,7 @@ trait AsyncControlTrait
 	}
 
 
-	public function renderAsync(string $linkMessage = NULL, array $linkAttributes = NULL)
+	public function renderAsync(string $linkMessage = NULL, array $linkAttributes = NULL, array $renderParams = [])
 	{
 		if (
 			$this instanceof Control
@@ -50,14 +50,14 @@ trait AsyncControlTrait
 		) {
 			$template = $this->createTemplate();
 			if ($template instanceof Template) {
-				$template->add('link', new AsyncControlLink($linkMessage, $linkAttributes));
+				$template->add('link', new AsyncControlLink($linkMessage, $linkAttributes, $renderParams));
 			}
 			$template->setFile(__DIR__ . '/templates/asyncLoadLink.latte');
 			$template->render();
 		} elseif (is_callable($this->asyncRenderer)) {
 			call_user_func($this->asyncRenderer);
 		} else {
-			$this->render();
+			call_user_func_array([$this, 'render'], $renderParams);
 		}
 	}
 
