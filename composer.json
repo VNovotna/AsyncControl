@@ -1,5 +1,5 @@
 {
-	"name": "pd/async-control",
+	"name": "novotna/async-control",
 	"description": "Trait for asynchronous control rendering",
 	"keywords": [
 		"async",
