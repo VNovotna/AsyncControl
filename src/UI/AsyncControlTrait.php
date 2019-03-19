@@ -18,10 +18,14 @@ trait AsyncControlTrait
 	 */
 	protected $asyncRenderer;
 
-
+        /**
+         * @crossOrigin
+         * @return void
+         * @throws \Throwable
+         */
 	public function handleAsyncLoad()
 	{
-		if ( ! $this instanceof Control || ! ($presenter = $this->getPresenter(FALSE)) || ! $presenter->isAjax()) {
+		if ( ! $this instanceof Control || ! $this->hasPresenter() || ! $this->getPresenter()->isAjax()) {
 			return;
 		}
 		ob_start(function () {
@@ -36,6 +40,7 @@ trait AsyncControlTrait
 			throw $e;
 		}
 		$content = ob_get_clean();
+                $presenter = $this->getPresenter();
 		$presenter->getPayload()->snippets[$this->getSnippetId('async')] = $content;
 		$presenter->sendPayload();
 	}
@@ -67,3 +72,4 @@ trait AsyncControlTrait
 		$this->asyncRenderer = $renderer;
 	}
 }
+
